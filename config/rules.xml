@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  UNO Online — game rules configuration.
+  Values mirror the official UNO rules (deck composition, turn structure)
+  with this project's scoring/house rules layered on top. PHP reads this
+  file once (includes/rules.php) and exposes it as constants/arrays so the
+  whole engine is configured from a single, human-editable source.
+-->
+<unoRules>
+  <players min="2" max="8" startingHandSize="7" />
+  <turn seconds="30" />
+  <targetScore default="500" />
+
+  <deck>
+    <colors>
+      <color>red</color>
+      <color>yellow</color>
+      <color>green</color>
+      <color>blue</color>
+    </colors>
+    <!-- per color: one 0, two each of 1-9, two Skip, two Reverse, two Draw Two -->
+    <wildCount>4</wildCount>
+    <wildDrawFourCount>4</wildDrawFourCount>
+  </deck>
+
+  <stacking>
+    <drawTwo stackable="true" />
+    <wildDrawFour stackable="false" />
+  </stacking>
+
+  <wildDrawFourRule>
+    <!-- Official rule: only playable when the player holds no card matching the current color. -->
+    <requireNoMatchingColor>true</requireNoMatchingColor>
+  </wildDrawFourRule>
+
+  <scoring>
+    <numberCard>faceValue</numberCard>
+    <skip>10</skip>
+    <reverse>10</reverse>
+    <drawTwo>10</drawTwo>
+    <wild>50</wild>
+    <wildDrawFour>50</wildDrawFour>
+    <roundWinnerPoints>0</roundWinnerPoints>
+  </scoring>
+
+  <winCondition>
+    <!-- Game ends once any player's cumulative score reaches targetScore.
+         The player with the LOWEST cumulative score is the overall winner. -->
+    <lowestScoreWins>true</lowestScoreWins>
+  </winCondition>
+
+  <lobby>
+    <reshuffleTurnOrderEachRound>true</reshuffleTurnOrderEachRound>
+    <lateJoinersSpectateUntilRoundEnds>true</lateJoinersSpectateUntilRoundEnds>
+    <spectatorsExcludedFromScoreboard>true</spectatorsExcludedFromScoreboard>
+  </lobby>
+</unoRules>

@@ -1,0 +1,15 @@
+# Environment / local overrides
+.env
+.env.local
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# XAMPP / local server artifacts (harmless to keep out of the repo)
+error_log

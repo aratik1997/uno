@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <clipPath id="cardClip">
+      <rect x="4" y="4" width="56" height="56" rx="14" />
+    </clipPath>
+  </defs>
+
+  <g transform="rotate(-8 32 32)">
+    <rect x="2" y="2" width="60" height="60" rx="15" fill="#141634" />
+    <g clip-path="url(#cardClip)">
+      <path d="M32 32 L60 4 L60 32 Z" fill="#e63946" />
+      <path d="M32 32 L60 32 L60 60 Z" fill="#f4c542" />
+      <path d="M32 32 L60 60 L4 60 Z" fill="#2a9d5c" />
+      <path d="M32 32 L4 60 L4 4 L32 4 Z" fill="#3a6fd8" />
+    </g>
+    <rect x="4" y="4" width="56" height="56" rx="14" fill="none" stroke="#ffffff" stroke-width="3.5" />
+    <ellipse cx="32" cy="32" rx="21" ry="14" fill="#ffffff" />
+    <text x="32" y="39" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-style="italic"
+          font-size="17" text-anchor="middle" fill="#e63946" stroke="#141634" stroke-width="0.6">UNO</text>
+  </g>
+</svg>

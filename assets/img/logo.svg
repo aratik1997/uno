@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 140" width="420" height="140">
+  <defs>
+    <clipPath id="cardClipBig">
+      <rect x="4" y="4" width="112" height="112" rx="26" />
+    </clipPath>
+  </defs>
+
+  <g transform="translate(10,10) rotate(-8 60 60)">
+    <rect x="2" y="2" width="120" height="120" rx="28" fill="#141634" />
+    <g clip-path="url(#cardClipBig)">
+      <path d="M60 60 L120 4 L120 60 Z" fill="#e63946" />
+      <path d="M60 60 L120 60 L120 120 Z" fill="#f4c542" />
+      <path d="M60 60 L120 120 L4 120 Z" fill="#2a9d5c" />
+      <path d="M60 60 L4 120 L4 4 L60 4 Z" fill="#3a6fd8" />
+    </g>
+    <rect x="4" y="4" width="112" height="112" rx="26" fill="none" stroke="#ffffff" stroke-width="6" />
+    <ellipse cx="60" cy="60" rx="40" ry="27" fill="#ffffff" />
+    <text x="60" y="72" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-style="italic"
+          font-size="32" text-anchor="middle" fill="#e63946" stroke="#141634" stroke-width="1">UNO</text>
+  </g>
+
+  <text x="150" y="72" font-family="'Trebuchet MS', Arial, sans-serif" font-weight="800" font-size="46" fill="#f4f4f9">
+    UNO <tspan fill="#f4c542">Online</tspan>
+  </text>
+  <text x="150" y="100" font-family="'Trebuchet MS', Arial, sans-serif" font-weight="600" font-size="16" fill="#a6a9c8">
+    Play with 2-8 friends, right in your browser
+  </text>
+</svg>
