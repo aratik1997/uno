@@ -1,0 +1,7 @@
+<?php
+// Copy this file to db.local.php and fill in real credentials.
+// db.local.php is gitignored — it is never committed.
+define('UNO_DB_HOST', '127.0.0.1');
+define('UNO_DB_NAME', 'uno_game');
+define('UNO_DB_USER', 'root');
+define('UNO_DB_PASS', '');

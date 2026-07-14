@@ -1,6 +1,7 @@
 # Environment / local overrides
 .env
 .env.local
+config/db.local.php
 
 # OS / editor cruft
 .DS_Store
