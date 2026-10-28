@@ -2,10 +2,7 @@
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/game_engine.php';
 
-// Generous relative to the ~1.2s client poll interval: browser tab
-// throttling, phone screen locks, and brief network drops can all stall
-// polling for well over 15s without the player actually being gone.
-const PRESENCE_TIMEOUT_SECONDS = 45;
+const PRESENCE_TIMEOUT_SECONDS = 15;
 const AVATAR_COLORS = ['#e63946', '#f4a261', '#2a9d5c', '#3a6fd8', '#a663cc', '#ff6392', '#06b6d4', '#84cc16'];
 
 function gen_room_code(PDO $pdo): string {
