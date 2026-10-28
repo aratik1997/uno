@@ -93,7 +93,7 @@ function touch_last_seen(PDO $pdo, int $roomId, string $sessionId): void {
  */
 function reap_stale_players(PDO $pdo, array $room): array {
     $stmt = $pdo->prepare(
-        'SELECT session_id FROM players WHERE room_id = ? AND last_seen < (NOW(3) - INTERVAL ? SECOND)'
+        'SELECT session_id FROM players WHERE room_id = ? AND is_bot = 0 AND last_seen < (NOW(3) - INTERVAL ? SECOND)'
     );
     $stmt->execute([$room['id'], PRESENCE_TIMEOUT_SECONDS]);
     $stale = array_column($stmt->fetchAll(), 'session_id');
@@ -133,13 +133,17 @@ function remove_player(PDO $pdo, array $room, string $sessionId, ?string $kicked
 
     // Reassign host if the host left/was kicked.
     if ($room['host_session_id'] === $sessionId) {
-        $remaining = get_players($pdo, (int)$room['id']);
-        $newHost = $remaining[0]['session_id'] ?? null;
+        // Bots can't host, so the new host is the first human left. With no humans left, the room is over.
+        $humans = array_values(array_filter(get_players($pdo, (int)$room['id']), fn($p) => !(int)$p['is_bot']));
+        $newHost = $humans[0]['session_id'] ?? null;
         $pdo->prepare('UPDATE rooms SET host_session_id = ? WHERE id = ?')->execute([$newHost, $room['id']]);
         $room['host_session_id'] = $newHost;
         if ($newHost !== null) {
-            $newHostName = $remaining[0]['name'];
+            $newHostName = $humans[0]['name'];
             insert_event($pdo, (int)$room['id'], 'system', ['message' => "{$newHostName} is now the host."]);
+        } else {
+            $pdo->prepare('UPDATE rooms SET status = ? WHERE id = ?')->execute(['finished', $room['id']]);
+            $room['status'] = 'finished';
         }
     }
 

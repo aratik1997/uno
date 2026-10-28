@@ -6,6 +6,7 @@
     leave: 'api/leave.php',
     kick: 'api/kick.php',
     start: 'api/start_game.php',
+    addBot: 'api/add_bot.php',
     play: 'api/play_card.php',
     draw: 'api/draw_card.php',
     pass: 'api/pass_turn.php',
@@ -148,6 +149,13 @@
     if (!ackOk(doc)) toast(ackError(doc));
   }
 
+  $('#btn-add-bot').addEventListener('click', async () => {
+    const difficulty = $('#bot-difficulty').value;
+    const doc = await apiPost(API.addBot, { session_id: state.sid, code: state.code, difficulty });
+    if (!ackOk(doc)) toast(ackError(doc));
+    pollOnce();
+  });
+
   $('#btn-start-game').addEventListener('click', async () => {
     const doc = await apiPost(API.start, { session_id: state.sid, code: state.code });
     if (!ackOk(doc)) toast(ackError(doc));
@@ -203,7 +211,8 @@
 
     state.players = Array.from(root.querySelectorAll('players > p')).map((p) => ({
       id: attr(p, 'id'), name: attr(p, 'name'), color: attr(p, 'color'),
-      role: attr(p, 'role'), isHost: attr(p, 'isHost') === '1', score: parseInt(attr(p, 'score', '0'), 10)
+      role: attr(p, 'role'), isHost: attr(p, 'isHost') === '1', score: parseInt(attr(p, 'score', '0'), 10),
+      isBot: attr(p, 'isBot') === '1', botDifficulty: attr(p, 'difficulty')
     }));
 
     const roundEl = root.querySelector('round');
@@ -419,6 +428,7 @@
         <span class="player-name-lobby">${escapeHtml(p.name)}${isMe ? ' (you)' : ''}</span>
         ${p.isHost ? '<span class="host-tag">HOST</span>' : ''}
         ${p.role === 'spectator' ? '<span class="spectator-tag">spectating</span>' : ''}
+        ${p.isBot ? `<span class="bot-tag" style="color:#ffd6a5;font-size:.8em">🤖 ${escapeHtml(p.botDifficulty || 'bot')}</span>` : ''}
       `;
       if (iAmHost && !isMe) {
         const btn = document.createElement('button');

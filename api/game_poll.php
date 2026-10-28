@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/../includes/util.php';
 require_once __DIR__ . '/../includes/db_helpers.php';
+require_once __DIR__ . '/../includes/actions.php';
+require_once __DIR__ . '/../includes/bots.php';
 require_once __DIR__ . '/../includes/xml_helper.php';
 require_once __DIR__ . '/../includes/events_xml.php';
 
@@ -23,6 +25,7 @@ $bundle = with_room_lock($code, function (PDO $pdo, array $room) use ($sessionId
         $state = decode_state($room);
         if ($state !== null && !empty($state['roundActive'])) {
             resolve_pending_timeout($pdo, $room, $state); // mutates $state and saves it
+            run_bot_turns($pdo, $room, $state);           // a bot whose turn is due plays now
         }
     }
     $room = maybe_advance_round($pdo, $room);
@@ -67,6 +70,8 @@ foreach ($players as $p) {
         'role' => $p['role'],
         'isHost' => $p['session_id'] === $room['host_session_id'] ? '1' : '0',
         'score' => $p['score'],
+        'isBot' => (int)$p['is_bot'] === 1 ? '1' : '0',
+        'difficulty' => $p['bot_difficulty'] ?? '',
     ]);
 }
 

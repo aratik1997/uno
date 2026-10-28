@@ -47,6 +47,8 @@ foreach ($players as $p) {
         'color' => $p['color'],
         'role' => $p['role'],
         'isHost' => $p['session_id'] === $room['host_session_id'] ? '1' : '0',
+        'isBot' => (int)$p['is_bot'] === 1 ? '1' : '0',
+        'difficulty' => $p['bot_difficulty'] ?? '',
     ]);
 }
 

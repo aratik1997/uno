@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/util.php';
 require_once __DIR__ . '/../includes/db_helpers.php';
+require_once __DIR__ . '/../includes/actions.php';
 require_once __DIR__ . '/../includes/xml_helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') xml_ack(false, 'POST required.');
@@ -16,16 +17,7 @@ $result = with_room_lock($code, function (PDO $pdo, array $room) use ($sessionId
 
     resolve_pending_timeout($pdo, $room, $state);
 
-    $res = engine_draw_card($state, $sessionId);
-    if (!$res['ok']) return $res;
-    save_state($pdo, (int)$room['id'], $state);
-
-    $players = get_players($pdo, (int)$room['id']);
-    $playerName = '???';
-    foreach ($players as $p) if ($p['session_id'] === $sessionId) { $playerName = $p['name']; break; }
-    insert_event($pdo, (int)$room['id'], 'card_drawn', ['sessionId' => $sessionId, 'name' => $playerName, 'count' => $res['drawn']]);
-
-    return ['ok' => true];
+    return perform_draw($pdo, $room, $state, $sessionId);
 });
 
 if ($result === null) xml_ack(false, 'Room not found.');

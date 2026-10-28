@@ -62,11 +62,19 @@ function ensure_schema(PDO $pdo): void {
         role ENUM('player','spectator') NOT NULL DEFAULT 'player',
         score INT NOT NULL DEFAULT 0,
         seat_order INT NOT NULL DEFAULT 0,
+        is_bot TINYINT(1) NOT NULL DEFAULT 0,
+        bot_difficulty VARCHAR(10) NULL,
         joined_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         last_seen DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
         UNIQUE KEY uniq_room_session (room_id, session_id),
         CONSTRAINT fk_players_room FOREIGN KEY (room_id) REFERENCES rooms(id) ON DELETE CASCADE
     ) ENGINE=InnoDB");
+
+    // Databases created before computer players existed lack these columns.
+    $hasBotColumn = $pdo->query("SHOW COLUMNS FROM players LIKE 'is_bot'")->fetch();
+    if (!$hasBotColumn) {
+        $pdo->exec("ALTER TABLE players ADD COLUMN is_bot TINYINT(1) NOT NULL DEFAULT 0, ADD COLUMN bot_difficulty VARCHAR(10) NULL");
+    }
 
     $pdo->exec("CREATE TABLE IF NOT EXISTS events (
         id BIGINT AUTO_INCREMENT PRIMARY KEY,

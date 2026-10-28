@@ -82,6 +82,14 @@ $r = rules();
           <label>Target Score
             <input id="lobby-target" type="number" min="50" step="50" disabled />
           </label>
+          <div class="bot-row">
+            <select id="bot-difficulty" aria-label="Bot difficulty">
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+            <button id="btn-add-bot" class="btn-ghost" type="button">🤖 Add Bot</button>
+          </div>
           <button id="btn-start-game" class="btn-primary">Start Game</button>
           <p class="hint">Need 2-8 players to start.</p>
         </div>

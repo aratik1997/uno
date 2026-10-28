@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../includes/util.php';
 require_once __DIR__ . '/../includes/db_helpers.php';
+require_once __DIR__ . '/../includes/actions.php';
 require_once __DIR__ . '/../includes/xml_helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') xml_ack(false, 'POST required.');
@@ -16,10 +17,7 @@ $result = with_room_lock($code, function (PDO $pdo, array $room) use ($sessionId
 
     resolve_pending_timeout($pdo, $room, $state);
 
-    $res = engine_pass_turn($state, $sessionId);
-    if (!$res['ok']) return $res;
-    save_state($pdo, (int)$room['id'], $state);
-    return ['ok' => true];
+    return perform_pass($pdo, $room, $state, $sessionId);
 });
 
 if ($result === null) xml_ack(false, 'Room not found.');

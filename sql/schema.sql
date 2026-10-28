@@ -28,6 +28,8 @@ CREATE TABLE players (
   name VARCHAR(20) NOT NULL,
   color VARCHAR(7) NOT NULL DEFAULT '#e63946',
   role ENUM('player','spectator') NOT NULL DEFAULT 'player',
+  is_bot TINYINT(1) NOT NULL DEFAULT 0,
+  bot_difficulty VARCHAR(10) NULL,
   score INT NOT NULL DEFAULT 0,
   seat_order INT NOT NULL DEFAULT 0,
   joined_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
